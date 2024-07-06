@@ -6,8 +6,10 @@ import com.gvgroup.usermanagement.model.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 
 import static com.gvgroup.usermanagement.exception.ErrorCode.GENERAL_ERROR;
 
@@ -23,6 +25,11 @@ public class ServiceExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse(ex.getResponseMessage(), ex.getErrorCode().getCode()), ex.getErrorCode().getHttpStatus());
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Void> accessDeniedExceptionHandler(AccessDeniedException ex) {
+        log.error("Access Denied Exception", ex);
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> userAlreadyExistsExceptionHandler(Exception ex) {

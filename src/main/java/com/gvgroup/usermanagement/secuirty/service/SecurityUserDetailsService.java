@@ -1,7 +1,6 @@
-package com.gvgroup.usermanagement.service;
+package com.gvgroup.usermanagement.secuirty.service;
 
-import com.gvgroup.usermanagement.entity.User;
-import com.gvgroup.usermanagement.model.SecurityUserDetails;
+import com.gvgroup.usermanagement.secuirty.model.SecurityUserDetails;
 import com.gvgroup.usermanagement.service.query.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +16,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
     private final UserQueryService userQueryService;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userQueryService.findUserByUserName(username)
                 .map(SecurityUserDetails::new)

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final UserQueryService userQueryService;
 
     @Override
@@ -28,7 +27,7 @@ public class UserServiceImpl implements UserService {
         User user = User.builder()
                 .userId(userId.getId())
                 .userName(userName)
-                .password(passwordEncoder.encode(password))
+                .password(password)
                 .firstName(firstName)
                 .lastName(lastName)
                 .phoneNumber(phoneNumber)

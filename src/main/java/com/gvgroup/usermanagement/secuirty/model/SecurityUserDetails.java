@@ -1,14 +1,14 @@
-package com.gvgroup.usermanagement.model;
+package com.gvgroup.usermanagement.secuirty.model;
 
-import com.gvgroup.usermanagement.entity.User;
 import com.gvgroup.usermanagement.entity.Authority;
+import com.gvgroup.usermanagement.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -61,5 +61,9 @@ public class SecurityUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return user.getIsActive();
+    }
+
+    public UUID getUserId() {
+        return user.getUserId();
     }
 }

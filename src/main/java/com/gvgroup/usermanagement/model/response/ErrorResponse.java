@@ -1,6 +1,7 @@
 package com.gvgroup.usermanagement.model.response;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,6 +9,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class ErrorResponse {
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String errorMessage;
-    private int errorCode;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer errorCode;
 }
