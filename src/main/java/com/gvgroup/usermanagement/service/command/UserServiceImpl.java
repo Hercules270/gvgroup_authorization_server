@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -39,6 +41,7 @@ public class UserServiceImpl implements UserService {
                 .idNumber(idNumber)
                 .email(email)
                 .isActive(Boolean.TRUE)
+                .createDate(Instant.now())
                 .build();
         return userRepository.save(user);
     }
@@ -62,6 +65,13 @@ public class UserServiceImpl implements UserService {
             List<Role> roles = userQueryService.findUSerRoles(updateDetails.getRoleIds());
             user.setRoles(roles);
         }
+        user.setUpdateDate(Instant.now());
         return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(UserId userId) {
+        userRepository.deleteByUserId(userId.getId());
     }
 }

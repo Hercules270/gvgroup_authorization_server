@@ -1,9 +1,6 @@
-package com.gvgroup.usermanagement.controller;
+package com.gvgroup.usermanagement.exception;
 
 
-import com.gvgroup.usermanagement.exception.BaseException;
-import com.gvgroup.usermanagement.exception.UserAlreadyExistsException;
-import com.gvgroup.usermanagement.exception.UserNotFoundException;
 import com.gvgroup.usermanagement.model.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -12,7 +9,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 
 import static com.gvgroup.usermanagement.exception.ErrorCode.GENERAL_ERROR;
 

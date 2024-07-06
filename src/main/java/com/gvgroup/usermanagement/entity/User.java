@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,6 +50,10 @@ public class User {
     private String email;
 
     private Boolean isActive;
+
+    private Instant createDate;
+
+    private Instant updateDate;
 
     @ManyToMany
     private List<Role> roles;

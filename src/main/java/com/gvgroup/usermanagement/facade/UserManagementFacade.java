@@ -80,4 +80,9 @@ public class UserManagementFacade {
         Role role = urmService.addAuthority(roleId, request);
         return new ResponseEntity<>(UserRoleResponse.toJson(role), HttpStatus.OK);
     }
+
+    public ResponseEntity<Void> deleteUser(UserId userId) {
+        userService.deleteUser(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

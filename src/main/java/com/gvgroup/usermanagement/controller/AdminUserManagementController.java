@@ -16,6 +16,7 @@ import com.gvgroup.usermanagement.values.UserId;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +58,12 @@ public class AdminUserManagementController {
     @PutMapping("/user/{user_id}")
     public ResponseEntity<UserDetailsResponse> getUserDetails(@PathVariable("user_id") String userId, @RequestBody UpdateUserDetailsRequest updateUserDetailsRequest) {
         return userManagementFacade.updateUserDetails(UserId.from(userId), updateUserDetailsRequest);
+    }
+
+    @PreAuthorize(value = "hasAnyAuthority('VIEW_USERS')")
+    @DeleteMapping("/user/{user_id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("user_id") String userId) {
+        return userManagementFacade.deleteUser(UserId.from(userId));
     }
 
     @PreAuthorize(value = "hasAnyAuthority('VIEW_USERS')")

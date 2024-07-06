@@ -24,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long>, PagingAndSort
             WHERE u.userId = :userId
             """)
     Optional<User> findByUserId(@Param("userId") UUID userId);
+
+    void deleteByUserId(UUID userId);
 }
