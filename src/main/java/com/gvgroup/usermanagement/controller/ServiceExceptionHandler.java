@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -43,6 +44,12 @@ public class ServiceExceptionHandler {
     public ResponseEntity<Void> accessDeniedExceptionHandler(AccessDeniedException ex) {
         log.error("Access Denied Exception", ex);
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException ex) {
+        log.error("Method Validation Exception", ex);
+        return new ResponseEntity<>(new ErrorResponse(ex.getFieldError().getDefaultMessage(), null), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

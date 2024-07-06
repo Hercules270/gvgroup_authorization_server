@@ -12,6 +12,7 @@ import java.util.List;
 @Builder
 public class UserRoleResponse {
 
+    private Long id;
     private String roleName;
     private List<String> authorities;
 
@@ -19,6 +20,7 @@ public class UserRoleResponse {
     public static List<UserRoleResponse> toJson(List<Role> roles) {
         return roles.stream()
                 .map(role -> UserRoleResponse.builder()
+                        .id(role.getId())
                         .roleName(role.getName())
                         .authorities(role.getAuthorities()
                                 .stream()
@@ -26,5 +28,9 @@ public class UserRoleResponse {
                                 .toList())
                         .build())
                 .toList();
+    }
+
+    public static UserRoleResponse toJson(Role role) {
+        return toJson(List.of(role)).get(0);
     }
 }

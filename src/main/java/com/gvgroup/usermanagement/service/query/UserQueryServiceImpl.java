@@ -51,4 +51,9 @@ public class UserQueryServiceImpl implements UserQueryService {
         return roleRepository.fetchRolesWithAuthorities(user.getRoles().stream().map(Role::getId).toList());
     }
 
+    @Override
+    public List<Role> findUSerRoles(List<Long> roleIds) {
+        return roleRepository.findAllById(roleIds);
+    }
+
 }

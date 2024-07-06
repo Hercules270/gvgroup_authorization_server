@@ -20,4 +20,6 @@ public interface UserQueryService {
     User findUserByUserId(UserId userId);
 
     List<Role> findRolesAndAuthoritiesByUser(User user);
+
+    List<Role> findUSerRoles(List<Long> roleIds);
 }

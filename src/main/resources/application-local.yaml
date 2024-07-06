@@ -16,8 +16,5 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
 
-logging:
-  level:
-    org:
-      springframework:
-        security: TRACE
+  jackson:
+    property-naming-strategy: SNAKE_CASE
