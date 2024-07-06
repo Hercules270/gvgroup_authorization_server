@@ -1,7 +1,9 @@
 package com.gvgroup.usermanagement.controller;
 
 
+import com.gvgroup.usermanagement.exception.BaseException;
 import com.gvgroup.usermanagement.exception.UserAlreadyExistsException;
+import com.gvgroup.usermanagement.exception.UserNotFoundException;
 import com.gvgroup.usermanagement.model.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,18 @@ public class ServiceExceptionHandler {
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> userAlreadyExistsExceptionHandler(UserAlreadyExistsException ex) {
         log.error("User already exists exception", ex);
+        return new ResponseEntity<>(new ErrorResponse(ex.getResponseMessage(), ex.getErrorCode().getCode()), ex.getErrorCode().getHttpStatus());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> userNotFoundExceptionHandler(UserNotFoundException ex) {
+        log.error("User not found exception", ex);
+        return new ResponseEntity<>(new ErrorResponse(ex.getResponseMessage(), ex.getErrorCode().getCode()), ex.getErrorCode().getHttpStatus());
+    }
+
+    @ExceptionHandler(BaseException.class)
+    public ResponseEntity<ErrorResponse> baseExceptionHandler(BaseException ex) {
+        log.error("Base exception happened", ex);
         return new ResponseEntity<>(new ErrorResponse(ex.getResponseMessage(), ex.getErrorCode().getCode()), ex.getErrorCode().getHttpStatus());
     }
 

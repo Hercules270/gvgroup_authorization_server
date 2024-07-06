@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     GENERAL_ERROR(0, HttpStatus.BAD_REQUEST),
-    USER_WITH_USERNAME_EXISTS(-2, HttpStatus.BAD_REQUEST);
+    USER_WITH_USERNAME_EXISTS(-2, HttpStatus.BAD_REQUEST),
+    USER_WITH_USER_ID_NOT_FOUND(-3, HttpStatus.NOT_FOUND);
 
     private final int code;
     private final HttpStatus httpStatus;

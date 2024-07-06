@@ -20,4 +20,9 @@ public class UserId {
     public static UserId from(UUID userId) {
         return new UserId(userId);
     }
+
+    @Override
+    public String toString() {
+        return id.toString();
+    }
 }

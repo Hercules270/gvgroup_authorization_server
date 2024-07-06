@@ -8,7 +8,6 @@ import com.gvgroup.usermanagement.repository.UserRepository;
 import com.gvgroup.usermanagement.service.query.UserQueryService;
 import com.gvgroup.usermanagement.values.UserId;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserId userId, String userName, String password, String firstName, String lastName, String email, String phoneNumber, String idNumber) {
-        userQueryService.findUserByUserNameOrEmail(userName, email)
+        userQueryService.findUserByUserNameOrEmailNullable(userName, email)
                 .ifPresent(user -> {
                     throw new UserAlreadyExistsException("User with username " + user.getUserName() + " already exists", "User with username " + user.getUserName() + " already exists", ErrorCode.USER_WITH_USERNAME_EXISTS);
                 });

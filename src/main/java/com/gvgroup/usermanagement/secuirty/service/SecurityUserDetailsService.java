@@ -18,7 +18,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userQueryService.findUserByUserName(username)
+        return userQueryService.findUserByUserNameNullable(username)
                 .map(SecurityUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found."));
     }

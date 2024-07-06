@@ -1,28 +1,23 @@
 package com.gvgroup.usermanagement.model.response;
 
 
-import com.gvgroup.usermanagement.entity.Role;
 import com.gvgroup.usermanagement.entity.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
 @SuperBuilder
-public class PageableUserDetailsResponse extends AbstractPageableResponse{
-
-    private List<UserDetailsResponse> users;
-
+public class PageableUserDetailsResponse extends AbstractPageableResponse<PageableUserDetailsResponse.CompactUserDetails>{
 
     public static PageableUserDetailsResponse toJson(Page<User> users) {
         return PageableUserDetailsResponse.builder()
-                .users(users.getContent().stream()
-                        .map(UserDetailsResponse::toJson)
+                .elements(users.getContent().stream()
+                        .map(CompactUserDetails::toJson)
                         .collect(Collectors.toList()))
                 .totalPages(users.getTotalPages())
                 .totalElements(users.getTotalElements())
@@ -31,7 +26,7 @@ public class PageableUserDetailsResponse extends AbstractPageableResponse{
 
     @Data
     @Builder
-    public static class UserDetailsResponse {
+    public static class CompactUserDetails {
 
         private UUID userId;
 
@@ -49,8 +44,8 @@ public class PageableUserDetailsResponse extends AbstractPageableResponse{
 
         private Boolean isActive;
 
-        public static UserDetailsResponse toJson(User user) {
-            return UserDetailsResponse.builder()
+        public static CompactUserDetails toJson(User user) {
+            return CompactUserDetails.builder()
                     .userId(user.getUserId())
                     .userName(user.getUserName())
                     .firstName(user.getFirstName())

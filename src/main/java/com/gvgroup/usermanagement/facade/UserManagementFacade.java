@@ -5,11 +5,11 @@ import com.gvgroup.usermanagement.entity.User;
 import com.gvgroup.usermanagement.model.request.CreateUserRequest;
 import com.gvgroup.usermanagement.model.response.CreateUserResponse;
 import com.gvgroup.usermanagement.model.response.PageableUserDetailsResponse;
+import com.gvgroup.usermanagement.model.response.UserDetailsResponse;
 import com.gvgroup.usermanagement.service.command.UserService;
 import com.gvgroup.usermanagement.service.query.UserQueryService;
 import com.gvgroup.usermanagement.values.UserId;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,5 +42,11 @@ public class UserManagementFacade {
     public ResponseEntity<PageableUserDetailsResponse> getUsers(int page, int size) {
         PageableUserDetailsResponse response = PageableUserDetailsResponse.toJson(userQueryService.findAllUsers(page, size));
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public ResponseEntity<UserDetailsResponse> getUserDetails(UserId userId) {
+        User user = userQueryService.findUserByUserId(userId);
+        user.setRoles(userQueryService.findRolesAndAuthoritiesByUser(user));
+        return new ResponseEntity<>(UserDetailsResponse.toJson(user), HttpStatus.OK);
     }
 }

@@ -1,23 +1,19 @@
 package com.gvgroup.usermanagement.exception;
 
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class BaseException extends RuntimeException{
 
     private String responseMessage;
+    private ErrorCode errorCode;
 
-    public BaseException(String message) {
-        super(message);
-    }
 
-    public BaseException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public BaseException(String message, String responseMessage) {
+    public BaseException(String message, String responseMessage, ErrorCode errorCode) {
         super(message);
         this.responseMessage = responseMessage;
+        this.errorCode = errorCode;
     }
 
 }
