@@ -41,44 +41,44 @@ public class AdminUserManagementController {
         return userManagementFacade.createUser(request);
     }
 
-    @PreAuthorize(value = "hasAnyAuthority('VIEW_USERS')")
+    @PreAuthorize(value = "hasAnyAuthority('MANAGE_USERS')")
     @GetMapping("/user")
     public ResponseEntity<PageableUserDetailsResponse> getUsers(@RequestParam(defaultValue = "0") int page,
                                                                 @RequestParam(defaultValue = "10") int size) {
         return userManagementFacade.getUsers(page, size);
     }
 
-    @PreAuthorize(value = "hasAnyAuthority('VIEW_USERS')")
+    @PreAuthorize(value = "hasAnyAuthority('MANAGE_USERS')")
     @GetMapping("/user/{user_id}")
     public ResponseEntity<UserDetailsResponse> getUserDetails(@PathVariable("user_id") String userId) {
         return userManagementFacade.getUserDetails(UserId.from(userId));
     }
 
-    @PreAuthorize(value = "hasAnyAuthority('VIEW_USERS')")
+    @PreAuthorize(value = "hasAnyAuthority('MANAGE_USERS')")
     @PutMapping("/user/{user_id}")
     public ResponseEntity<UserDetailsResponse> getUserDetails(@PathVariable("user_id") String userId, @RequestBody UpdateUserDetailsRequest updateUserDetailsRequest) {
         return userManagementFacade.updateUserDetails(UserId.from(userId), updateUserDetailsRequest);
     }
 
-    @PreAuthorize(value = "hasAnyAuthority('VIEW_USERS')")
+    @PreAuthorize(value = "hasAnyAuthority('MANAGE_USERS')")
     @DeleteMapping("/user/{user_id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("user_id") String userId) {
         return userManagementFacade.deleteUser(UserId.from(userId));
     }
 
-    @PreAuthorize(value = "hasAnyAuthority('VIEW_USERS')")
+    @PreAuthorize(value = "hasAnyAuthority('MANAGE_USERS')")
     @PostMapping("/role")
     public ResponseEntity<UserRoleResponse> createRole(@RequestBody @Valid CreateRoleRequest createRoleRequest) {
         return userManagementFacade.createRole(createRoleRequest);
     }
 
-    @PreAuthorize(value = "hasAnyAuthority('VIEW_USERS')")
+    @PreAuthorize(value = "hasAnyAuthority('MANAGE_USERS')")
     @PutMapping("/role/{roleId}")
     public ResponseEntity<UserRoleResponse> addAuthorityToRole(@PathVariable("roleId") Long roleName, @RequestBody @Valid AddAuthorityToRoleRequest request) {
         return userManagementFacade.addAuthorityToRole(roleName, request);
     }
 
-    @PreAuthorize(value = "hasAnyAuthority('VIEW_USERS')")
+    @PreAuthorize(value = "hasAnyAuthority('MANAGE_USERS')")
     @PostMapping("/authority")
     public ResponseEntity<AuthorityResponse> createAuthority(@RequestBody @Valid CreateAuthorityRequest createAuthorityRequest) {
         return userManagementFacade.createAuthority(createAuthorityRequest);
