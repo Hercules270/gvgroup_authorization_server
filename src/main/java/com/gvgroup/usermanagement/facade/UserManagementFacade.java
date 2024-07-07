@@ -4,6 +4,8 @@ package com.gvgroup.usermanagement.facade;
 import com.gvgroup.usermanagement.entity.Authority;
 import com.gvgroup.usermanagement.entity.Role;
 import com.gvgroup.usermanagement.entity.User;
+import com.gvgroup.usermanagement.model.message.UserCreatedMessage;
+import com.gvgroup.usermanagement.model.message.UserDeletedMessage;
 import com.gvgroup.usermanagement.model.request.AddAuthorityToRoleRequest;
 import com.gvgroup.usermanagement.model.request.AuthorityResponse;
 import com.gvgroup.usermanagement.model.request.CreateAuthorityRequest;
@@ -14,6 +16,7 @@ import com.gvgroup.usermanagement.model.response.CreateUserResponse;
 import com.gvgroup.usermanagement.model.response.PageableUserDetailsResponse;
 import com.gvgroup.usermanagement.model.response.UserDetailsResponse;
 import com.gvgroup.usermanagement.model.response.UserRoleResponse;
+import com.gvgroup.usermanagement.service.MessagePublisherService;
 import com.gvgroup.usermanagement.service.URMService;
 import com.gvgroup.usermanagement.service.command.UserService;
 import com.gvgroup.usermanagement.service.query.UserQueryService;
@@ -23,6 +26,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import static com.gvgroup.usermanagement.util.KafkaConstants.USER_CREATED_TOPIC_NAME;
+import static com.gvgroup.usermanagement.util.KafkaConstants.USER_DELETED_TOPIC_NAME;
 
 @Component
 @RequiredArgsConstructor
@@ -36,9 +42,11 @@ public class UserManagementFacade {
 
     private final URMService urmService;
 
+    private final MessagePublisherService messagePublisherService;
+
     public ResponseEntity<CreateUserResponse> createUser(CreateUserRequest request) {
         UserId userId = UserId.create();
-        userService.createUser(
+        User user = userService.createUser(
                 userId,
                 request.getUserName(),
                 passwordEncoder.encode(request.getPassword()),
@@ -47,6 +55,8 @@ public class UserManagementFacade {
                 request.getEmail(),
                 request.getPhoneNumber(),
                 request.getIdNumber());
+
+        messagePublisherService.publish(USER_CREATED_TOPIC_NAME, UserCreatedMessage.convert(user));
         return new ResponseEntity<>(new CreateUserResponse(userId.getId()), HttpStatus.CREATED);
     }
 
@@ -83,6 +93,7 @@ public class UserManagementFacade {
 
     public ResponseEntity<Void> deleteUser(UserId userId) {
         userService.deleteUser(userId);
+        messagePublisherService.publish(USER_DELETED_TOPIC_NAME, UserDeletedMessage.convert(userId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
