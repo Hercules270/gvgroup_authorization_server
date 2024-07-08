@@ -12,6 +12,9 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - authorization_network
+
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
@@ -20,6 +23,9 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
+    networks:
+      - authorization_network
+
   kafka:
     image: confluentinc/cp-kafka:latest
     container_name: kafka
@@ -34,6 +40,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - authorization_network
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
@@ -46,6 +54,8 @@ services:
       - KAFKA_CLUSTERS_0_NAME=local
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
       - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    networks:
+      - authorization_network
 
   user-management-app:
     build: .
@@ -60,5 +70,12 @@ services:
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: 12345
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    networks:
+      - authorization_network
+
 volumes:
   postgres_data:
+
+networks:
+  authorization_network:
+    driver: bridge
